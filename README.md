@@ -12,6 +12,7 @@ To display page title in your view:
 
 Setting page title from I18n files.
 
+```ruby
 en:
   titles:
     simple_helper_default:
@@ -19,79 +20,93 @@ en:
     users:
       new: "Sign up"
       show: "%{name}'s Page"
+```
 
 ## Interpolation
 
-  page_title :name => @user.name
-  or
-  page_title_options.merge!({:name => "John Doe"})
-  or
-  simple_helper :page_title, :name => "John Doe"
+In many cases you want to abstract your translations so that variables can be interpolated into the translation.
+
+```ruby
+page_title :name => @user.name
+or
+page_title_options.merge!({:name => "John Doe"})
+or
+simple_helper :page_title, :name => "John Doe"
+```
 
 ## Aliases
 
 There are some action aliases:
 
-  "create" => "new"
-  "update" => "edit"
-  "remove" => "destroy"
+```ruby
+"create" => "new"
+"update" => "edit"
+"remove" => "destroy"
+```
 
-The search chain at your I18n backend:
+I18n Backend Chain:
 
-  en:
-  |  [helper method name]:
-  |  |  simple_helper_default:
-  |  |  |  "My default data"
-  |  |  |
-  |  |  [controller]:
-  |  |  |  [action]: "My custom data for this action"
+```ruby
+en:
+  [helper method name]:
+    simple_helper_default:
+      "My default data"
+    [controller]:
+      [action]: "My custom data for this action"
+```
 
-And you can define custom aliases, example:
+Adding custom aliases:
 
- class PostsController < ApplicationController
+```ruby
+class PostsController < ApplicationController
 
-   SIMPLE_HELPER_ALIASES = {
-     "the_custom_action" => "index"
-   }
+  SIMPLE_HELPER_ALIASES = {
+    "the_custom_action" => "index"
+  }
 
-   def index
-     ...
-   end
+  def index
+    ...
+  end
 
-   def the_custom_action
-     ...
-   end
+  def the_custom_action
+    ...
+  end
 
- end
+end
+```
 
 This means that the I18n scope for the action "the_custom_action" will be the same as "index".
 
 You can also specify a custom location at the "scope" key at the options hash.
 
-  simple_helper :page_title, :scope => "my.awesome.chain", :name => "John Doe"
-  or
-  page_title_options.merge!({:scope => "my.awesome.chain", :name => "John Doe"})
+```ruby
+simple_helper :page_title, :scope => "my.awesome.chain", :name => "John Doe"
+or
+page_title_options.merge!({:scope => "my.awesome.chain", :name => "John Doe"})
+```
 
 ## Getting started
 
 Simple helpers works with Rails 3.0 onwards. You can add it to your Gemfile with:
 
-  gem 'simple_helpers'
+**gem 'simple_helpers'**
 
 Run the bundle command to install it.
 
 After you install and add it to your Gemfile, you need to run the generator to create the initializer file.
 
-  rails generate simple_helpers
+**rails generate simple_helpers**
 
 ## Usage
 
 A few lines that could be called in your controllers:
 
-  simple_helper :page_subtitle, :donuts_message, :special_message, :title => @post.title
-  special_message_options.merge({:author => @post.author.name})
-  page_subtitle "Keep Calm and %{text}", :text => "Call Batman"
-  simple_helper :user_alert
+```ruby
+simple_helper :page_subtitle, :special_message, :title => @post.title
+special_message_options.merge({:author => @post.author.name})
+page_subtitle "Keep Calm and %{text}", :text => "Call Batman"
+simple_helper :user_alert
+```
 
 ## Maintainer
 
