@@ -88,10 +88,10 @@ After you install and add it to your Gemfile, you need to run the generator to c
 
 A few lines that could be called in your controllers:
 
-simple_helper :page_subtitle, :donuts_message, :special_message, :title => @post.title
-special_message_options.merge({:author => @post.author.name})
-page_subtitle "Keep Calm and %{text}", :text => "Call Batman"
-simple_helper :user_alert
+  simple_helper :page_subtitle, :donuts_message, :special_message, :title => @post.title
+  special_message_options.merge({:author => @post.author.name})
+  page_subtitle "Keep Calm and %{text}", :text => "Call Batman"
+  simple_helper :user_alert
 
 ## Maintainer
 
