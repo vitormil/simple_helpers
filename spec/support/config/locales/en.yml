@@ -1,0 +1,14 @@
+en:
+  titles:
+    simple_helper_default:
+      "default value to title"
+    products:
+      index: "My awesome products i18n title - index"
+      show: "My awesome products i18n title - default"
+
+  subtitles:
+    simple_helper_default:
+      "default value to subtitle"
+    products:
+      index: "My awesome products i18n subtitle - index"
+      show: "My awesome products i18n subtitle - show"
