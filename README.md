@@ -1,4 +1,5 @@
 # Simple Helpers
+[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/vitormil/simple_helpers)
 
 Easily create variables with I18n and interpolation support to your controllers and views.
 
