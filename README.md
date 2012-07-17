@@ -97,6 +97,10 @@ After you install and add it to your Gemfile, you need to run the generator to c
 
 **rails generate simple_helpers**
 
+Take a look at the generated file:
+
+https://github.com/vitormil/simple_helpers/blob/master/templates/initializer.rb
+
 ## Usage
 
 A few lines that could be called in your controllers:
