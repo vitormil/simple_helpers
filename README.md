@@ -24,7 +24,7 @@ en:
 
 ## Interpolation
 
-In many cases you want to abstract your translations so that variables can be interpolated into the translation.
+In many cases you want to abstract your translations so that variables can be interpolated into the translation, just like Rails do.
 
 ```ruby
 page_title :name => @user.name
