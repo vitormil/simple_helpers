@@ -1,4 +1,5 @@
 # Simple Helpers
+[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/vitormil/simple_helpers)
 
 Easily create variables with I18n and interpolation support to your controllers and views.
 
@@ -97,6 +98,14 @@ simple_helper :user_alert
 ```
 
 ## Getting started
+
+### Instalation
+
+```ruby
+gem install simple_helpers
+```
+
+### Setup
 
 Simple helpers works with Rails 3.0 onwards. You can add it to your Gemfile with:
 
