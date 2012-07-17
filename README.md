@@ -8,7 +8,7 @@ Examples:
 
 To display page title in your view:
 
-  <%= page_title %>
+**<%= page_title %>**
 
 Setting page title from I18n files.
 
@@ -48,11 +48,11 @@ I18n Backend Chain:
 
 ```ruby
 en:
-  [helper method name]:
+  <helper method name>:
     simple_helper_default:
       "My default data"
-    [controller]:
-      [action]: "My custom data for this action"
+    <controller>:
+      <action>: "My custom data for this action"
 ```
 
 Adding custom aliases:
@@ -77,7 +77,7 @@ end
 
 This means that the I18n scope for the action "the_custom_action" will be the same as "index".
 
-You can also specify a custom location at the "scope" key at the options hash.
+You can also specify a custom location at the "scope" key at the options hash, like rails does.
 
 ```ruby
 simple_helper :page_title, :scope => "my.awesome.chain", :name => "John Doe"
