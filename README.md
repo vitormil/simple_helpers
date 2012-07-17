@@ -22,7 +22,7 @@ en:
       show: "%{name}'s Page"
 ```
 
-## Interpolation
+### Interpolation
 
 In many cases you want to abstract your translations so that variables can be interpolated into the translation, just like Rails do.
 
@@ -34,7 +34,7 @@ or
 simple_helper :page_title, :name => "John Doe"
 ```
 
-## Aliases
+### Aliases
 
 There are some action aliases:
 
@@ -85,6 +85,17 @@ or
 page_title_options.merge!({:scope => "my.awesome.chain", :name => "John Doe"})
 ```
 
+### Usage
+
+Other examples that could be called in your controllers:
+
+```ruby
+simple_helper :page_subtitle, :special_message, :title => @post.title
+special_message_options.merge({:author => @post.author.name})
+page_subtitle "Keep Calm and %{text}", :text => "Call Batman"
+simple_helper :user_alert
+```
+
 ## Getting started
 
 Simple helpers works with Rails 3.0 onwards. You can add it to your Gemfile with:
@@ -93,24 +104,13 @@ Simple helpers works with Rails 3.0 onwards. You can add it to your Gemfile with
 
 Run the bundle command to install it.
 
-After you install and add it to your Gemfile, you need to run the generator to create the initializer file.
+After you install and add it to your Gemfile, you need to run the generator to create the initializer file. In this file you will configure the default behavior to your controllers.
 
 **rails generate simple_helpers**
 
 Take a look at the generated file:
 
 https://github.com/vitormil/simple_helpers/blob/master/templates/initializer.rb
-
-## Usage
-
-A few lines that could be called in your controllers:
-
-```ruby
-simple_helper :page_subtitle, :special_message, :title => @post.title
-special_message_options.merge({:author => @post.author.name})
-page_subtitle "Keep Calm and %{text}", :text => "Call Batman"
-simple_helper :user_alert
-```
 
 ## Maintainer
 
