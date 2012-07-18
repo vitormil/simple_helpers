@@ -14,7 +14,7 @@ To display page title in your view:
 
 ### Usage
 
-You can configure an automatic behavior to all controllers setting an initializer to your rails app:
+You can configure an automatic behavior to your controllers setting an initializer:
 
 ```ruby
 require "simple_helpers"
