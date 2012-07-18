@@ -139,13 +139,17 @@ gem install simple_helpers
 
 Simple helpers works with Rails 3.0 onwards. You can add it to your Gemfile with:
 
-**gem 'simple_helpers'**
+```ruby
+gem 'simple_helpers'
+```
 
 Run the bundle command to install it.
 
 After you install and add it to your Gemfile, you need to run the generator to create the initializer file. In this file you will configure the default behavior to your controllers.
 
-**rails generate simple_helpers**
+```ruby
+rails generate simple_helpers
+```
 
 Take a look at the generated file:
 
