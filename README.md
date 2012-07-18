@@ -22,7 +22,7 @@ require "simple_helpers"
 SimpleHelpers.configure do |config|
   config.helpers   = [:page_title]
   config.whitelist = []
-  config.blacklist = []
+  config.blacklist = [SessionsController]
 end
 ```
 
@@ -31,7 +31,7 @@ And/or call the method **simple_helper** manually according to your needs:
 ```ruby
 # some possible calls
 simple_helper :page_subtitle, :special_message, :title => @post.title
-special_message_options.merge({:author => @post.author.name})
+special_message_options.merge!({:author => @post.author.name})
 page_subtitle "Keep Calm and %{text}", :text => "Call Batman"
 page_subtitle "Keep Calm and Call Batman"
 simple_helper :user_alert
