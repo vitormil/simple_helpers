@@ -8,7 +8,6 @@ module SimpleHelpers
     end
 
     initializer "simple_helpers.initialize" do
-
       ::ActionController::Base.instance_eval do
         include SimpleHelpers::ActionController
 
@@ -23,9 +22,7 @@ module SimpleHelpers
 
           initialize_method.bind(self).call(*args)
         end
-
       end
-
       ::I18n.load_path += Dir[File.dirname(__FILE__) + "/../../locales/*.yml"]
     end
   end

@@ -21,20 +21,23 @@ require "simple_helpers"
 
 SimpleHelpers.configure do |config|
   config.helpers   = [:page_title]
-  config.whitelist = []
   config.blacklist = [SessionsController]
+  config.whitelist = []
 end
 ```
 
 And/or call the method **simple_helper** manually according to your needs:
 
 ```ruby
-# some possible calls
-simple_helper :page_subtitle, :special_message, :title => @post.title
-special_message_options.merge!({:author => @post.author.name})
+# some examples
+simple_helper :page_subtitle, :sponsor, :title => @post.title
+@sponsor_options.merge!({:company => "Github"})
+
 page_subtitle "Keep Calm and %{text}", :text => "Call Batman"
-page_subtitle "Keep Calm and Call Batman"
+page_subtitle "Keep Calm"
+
 simple_helper :user_alert
+@user_alert_options = {:username => @post.author}
 ```
 
 If you didn't set the value manually, the gem will get it from your I18n backend.
@@ -52,7 +55,10 @@ en:
       "Default page subtitle"
   user_alerts:
     users:
-      index: "This alert needs your attention."
+      index: "This alert goes to %{username}"
+  sponsors:
+    simple_helper_default:
+      "The article %{title} is sponsored by %{company}."
 ```
 
 ### Interpolation
@@ -62,7 +68,7 @@ In many cases you want to abstract your translations so that variables can be in
 ```ruby
 page_title :name => @user.name
 or
-page_title_options.merge!({:name => "John Doe"})
+@page_title_options.merge!({:name => "John Doe"})
 or
 simple_helper :page_title, :name => "John Doe"
 ```
@@ -115,7 +121,8 @@ You can also specify a custom location at the "scope" key at the options hash, l
 ```ruby
 simple_helper :page_title, :scope => "my.awesome.chain", :name => "John"
 or
-page_title_options.merge!({:scope => "my.awesome.chain", :name => "John"})
+simple_helper :page_title
+@page_title_options = {:scope => "my.awesome.chain", :name => "John"}
 ```
 
 Make sure you have this scope defined in a locale file:

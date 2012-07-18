@@ -20,8 +20,8 @@ module SimpleHelpers
           end
 
           define_method("#{name}_options") do
-            options = instance_variable_get "@#{name}_options"
-            options ||= {}
+            instance_variable_set("@#{name}_options", {}) unless instance_variable_get("@#{name}_options")
+            instance_variable_get("@#{name}_options")
           end
 
           define_method("#{name}_set") do |*args|
@@ -37,13 +37,13 @@ module SimpleHelpers
 
             result      = value % options unless value.nil?
 
-            # TODO: refactor
-            new_options = options.delete_if{|k,v| k.to_sym == :scope}
+            # removing rails reserved word
+            helper_options = options.delete_if{|k,v| k.to_sym == :scope}
 
-            result ||= t(scopes[:first], new_options)
+            result ||= t(scopes[:first], helper_options)
             if result.include? "translation missing" and scopes.has_key? :second
-              new_options.merge! :default => result
-              result = t(scopes[:second], new_options)
+              helper_options.merge! :default => result
+              result = t(scopes[:second], helper_options)
             end
 
             result
