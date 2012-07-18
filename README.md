@@ -19,7 +19,6 @@ require "simple_helpers"
 
 SimpleHelpers.configure do |config|
   config.helpers   = [:page_title, :page_subtitle]
-  config.blacklist = [SessionsController]
 end
 ```
 
