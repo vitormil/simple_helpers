@@ -6,7 +6,7 @@ Easily create variables with I18n and interpolation support to your controllers 
 
 You can configure it to automaticly create some methods (like page_title, page_subtitle) or call the method **simple_helper** manually according to your needs.
 
-To display page title in your view, classic example:
+To display page title in your view:
 
 ```ruby
 <%= page_title %>
