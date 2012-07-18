@@ -6,7 +6,7 @@ Easily create variables with I18n and interpolation support to your controllers 
 
 You can configure it to automaticly create some methods (like page_title, page_subtitle) or call the method **simple_helper** manually according to your needs.
 
-To display page title in your view:
+To display page title in your view, classic example:
 
 ```ruby
 <%= page_title %>
@@ -20,7 +20,9 @@ You can configure an automatic behavior to all controllers setting an initialize
 require "simple_helpers"
 
 SimpleHelpers.configure do |config|
-  config.helpers   = [:page_title, :page_subtitle]
+  config.helpers   = [:page_title]
+  config.whitelist = []
+  config.blacklist = []
 end
 ```
 
@@ -35,7 +37,7 @@ page_subtitle "Keep Calm and Call Batman"
 simple_helper :user_alert
 ```
 
-If you didn't set manually the values, the gem will get it from I18n files.
+If you didn't set the value manually, the gem will get it from your I18n backend.
 
 ```ruby
 en:
@@ -47,7 +49,10 @@ en:
       show: "%{name}'s Page"
   user_alerts:
     users:
-      index: "Heads up! This alert needs your attention."
+      index: "This alert needs your attention."
+  special_messages:
+    users:
+      index: "Best check yo self, you're not looking too good."
 ```
 
 ### Interpolation
