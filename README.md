@@ -8,7 +8,9 @@ You can configure it to automaticly create some methods (like page_title, page_s
 
 To display page title in your view:
 
-**<%= page_title %>**
+```ruby
+<%= page_title %>
+```
 
 ### Usage
 
