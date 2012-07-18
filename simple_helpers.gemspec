@@ -12,7 +12,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["vitormil@gmail.com"]
   gem.summary       = "Customizable helper methods with I18n support."
   gem.description   = gem.summary
-  gem.homepage      = "http://www.github.com/vitormil"
+  gem.homepage      = "http://rubygems.org/gems/simple_helpers"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
