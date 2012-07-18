@@ -6,13 +6,35 @@ Easily create variables with I18n and interpolation support to your controllers 
 
 You can configure it to automaticly create some methods (like page_title, page_subtitle) or call the method **simple_helper** manually according to your needs.
 
-Examples:
-
 To display page title in your view:
 
 **<%= page_title %>**
 
-Setting page title from I18n files.
+### Usage
+
+You can configure an automatic behavior to all controllers setting an initializer to your rails app:
+
+```ruby
+require "simple_helpers"
+
+SimpleHelpers.configure do |config|
+  config.helpers   = [:page_title, :page_subtitle]
+  config.blacklist = [SessionsController]
+end
+```
+
+And/or call the method **simple_helper** manually according to your needs:
+
+```ruby
+# some possible calls
+simple_helper :page_subtitle, :special_message, :title => @post.title
+special_message_options.merge({:author => @post.author.name})
+page_subtitle "Keep Calm and %{text}", :text => "Call Batman"
+page_subtitle "Keep Calm and Call Batman"
+simple_helper :user_alert
+```
+
+If you didn't set manually the values, the gem will get it from I18n files.
 
 ```ruby
 en:
@@ -22,6 +44,9 @@ en:
     users:
       new: "Sign up"
       show: "%{name}'s Page"
+  user_alerts:
+    users:
+      index: "Heads up! This alert needs your attention."
 ```
 
 ### Interpolation
@@ -82,20 +107,18 @@ This means that the I18n scope for the action "the_custom_action" will be the sa
 You can also specify a custom location at the "scope" key at the options hash, like rails does.
 
 ```ruby
-simple_helper :page_title, :scope => "my.awesome.chain", :name => "John Doe"
+simple_helper :page_title, :scope => "my.awesome.chain", :name => "John"
 or
-page_title_options.merge!({:scope => "my.awesome.chain", :name => "John Doe"})
+page_title_options.merge!({:scope => "my.awesome.chain", :name => "John"})
 ```
 
-### Usage
-
-Other examples that could be called in your controllers:
+Make sure you have this scope defined in a locale file:
 
 ```ruby
-simple_helper :page_subtitle, :special_message, :title => @post.title
-special_message_options.merge({:author => @post.author.name})
-page_subtitle "Keep Calm and %{text}", :text => "Call Batman"
-simple_helper :user_alert
+en:
+  my:
+    awesome:
+      chain: "What's up %{name}?"
 ```
 
 ## Getting started
