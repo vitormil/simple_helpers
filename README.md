@@ -47,12 +47,12 @@ en:
     users:
       new: "Sign up"
       show: "%{name}'s Page"
+  subtitles:
+    simple_helper_default:
+      "Default page subtitle"
   user_alerts:
     users:
       index: "This alert needs your attention."
-  special_messages:
-    users:
-      index: "Best check yo self, you're not looking too good."
 ```
 
 ### Interpolation
