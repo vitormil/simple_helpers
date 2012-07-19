@@ -24,8 +24,7 @@ module SimpleHelpers
         simple_helper_aliases = controller.class.const_get :SIMPLE_HELPER_ALIASES
         action_name = simple_helper_aliases.fetch(action_name, action_name) if simple_helper_aliases.is_a? Hash
       end
-      group = method_name.gsub(/^page_/,"")
-      group = group.pluralize
+      group = group.pluralize if options.has_key? :pluralize
 
       {
         :first => "#{group}.#{controller_name}.#{action_name.to_s}",

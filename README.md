@@ -44,21 +44,21 @@ If you didn't set the value manually, the gem will get it from your I18n backend
 
 ```ruby
 en:
-  titles:
+  page_title:
     simple_helper_default:
       "Default page title"
     users:
       new: "Sign up"
       show: "%{name}'s Page"
-  subtitles:
+  page_subtitle:
     simple_helper_default:
       "Default page subtitle"
-  user_alerts:
+  user_alert:
     users:
       index: "This alert goes to %{username}"
-  sponsors:
+  sponsor:
     simple_helper_default:
-      "The article %{title} is sponsored by %{company}."
+      "This article %{title} is sponsored by %{company}."
 ```
 
 ### Interpolation
@@ -168,11 +168,9 @@ https://github.com/vitormil/simple_helpers/blob/master/templates/initializer.rb
 
 ## Special thanks
 
-I have been studying (and learning a lot!) with Nando Vieira (@fnando) and this gem was inspired by the "page_title" feature from his gem @swiss_knife.
+I have been learning a lot with Nando Vieira and this gem was inspired by the "page_title" feature from his gem @swiss_knife.
 
-Check out his work! Thanks @fnando
-- http://nandovieira.com.br/
-- http://github.com/fnando
+Thanks @fnando! (<http://github.com/fnando>)
 
 ## Contributing
 

@@ -2,7 +2,6 @@
 require "simple_helpers"
 
 SimpleHelpers.configure do |config|
-
   # Helper methods that will be automatically
   # created in the controllers
   # config.helpers   = [:page_title]
@@ -18,6 +17,7 @@ SimpleHelpers.configure do |config|
   # config.whitelist = []
 
   # Options:
-  # [ :log ]
-  config.options = [:log]
+  # :pluralize => I18n pluralized helper names
+  # [ :log, :pluralize ]
+  # config.options = [ :log ]
 end
