@@ -63,7 +63,7 @@ en:
 
 ### Interpolation
 
-In many cases you want to abstract your translations so that variables can be interpolated into the translation, just like Rails do.
+In many cases you want to abstract your translations so that variables can be interpolated into the translation, just like Rails does.
 
 ```ruby
 page_title :name => @user.name
@@ -116,7 +116,7 @@ end
 
 This means that the I18n scope for the action "the_custom_action" will be the same as "index".
 
-You can also specify a custom location at the "scope" key at the options hash, like rails does.
+You can also specify a custom location at the "scope" key at the options hash, exactly like Rails does.
 
 ```ruby
 simple_helper :page_title, :scope => "my.awesome.chain", :name => "John"
