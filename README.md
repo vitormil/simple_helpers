@@ -22,7 +22,7 @@ require "simple_helpers"
 SimpleHelpers.configure do |config|
   config.helpers = [:page_title]
   config.except  = [SessionsController]
-  config.only    = []
+  # config.only    = []
 end
 ```
 
