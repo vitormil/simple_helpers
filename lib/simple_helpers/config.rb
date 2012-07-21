@@ -1,22 +1,22 @@
 module SimpleHelpers
   class Config
 
-    VALID_OPTIONS = [:log]
+    VALID_OPTIONS = [:log, :pluralize]
 
-    def self.whitelist
-      @whitelist ||= []
+    def self.only
+      @only ||= []
     end
 
-    def self.whitelist=(*allowed)
-      @whitelist = SimpleHelpers::Support.certified_array!(allowed)
+    def self.only=(*allowed)
+      @only = SimpleHelpers::Support.certified_array!(allowed)
     end
 
-    def self.blacklist
-      @blacklist ||= []
+    def self.except
+      @except ||= []
     end
 
-    def self.blacklist=(*not_allowed)
-      @blacklist = SimpleHelpers::Support.certified_array!(not_allowed)
+    def self.except=(*not_allowed)
+      @except = SimpleHelpers::Support.certified_array!(not_allowed)
     end
 
     def self.helpers
@@ -28,9 +28,9 @@ module SimpleHelpers
     end
 
     def self.allowed_controller?(controller)
-      ( @whitelist.empty? and @blacklist.empty? ) or
-      ( not @whitelist.empty? and @whitelist.include?(controller) ) or
-      ( not @blacklist.empty? and not @blacklist.include?(controller) )
+      ( @only.empty? and @except.empty? ) or
+      ( not @only.empty? and @only.include?(controller) ) or
+      ( not @except.empty? and not @except.include?(controller) )
     end
 
     def self.options

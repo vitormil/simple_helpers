@@ -2,7 +2,7 @@
 [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/vitormil/simple_helpers)
 [![Build Status](https://secure.travis-ci.org/vitormil/simple_helpers.png)](http://travis-ci.org/vitormil/simple_helpers)
 
-Easily create variables with I18n and interpolation support to your controllers and views.
+Easily create helper methods with I18n and interpolation support to your controllers and views.
 
 You can configure it to automaticly create some methods (like page_title, page_subtitle) or call the method **simple_helper** manually according to your needs.
 
@@ -20,9 +20,9 @@ You can configure an automatic behavior to your controllers setting an initializ
 require "simple_helpers"
 
 SimpleHelpers.configure do |config|
-  config.helpers   = [:page_title]
-  config.blacklist = [SessionsController]
-  config.whitelist = []
+  config.helpers = [:page_title]
+  config.except  = [SessionsController]
+  config.only    = []
 end
 ```
 
@@ -83,7 +83,7 @@ There are some action aliases:
 "remove" => "destroy"
 ```
 
-I18n Backend Chain:
+I18n backend chain:
 
 ```ruby
 en:

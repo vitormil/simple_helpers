@@ -9,12 +9,12 @@ SimpleHelpers.configure do |config|
   # config.helpers will NOT be created automatically in these controllers
   # *** keep it empty if you would allow all controlers
   # example: [SessionsController]
-  # config.blacklist = []
+  # config.except = []
 
   # config.helpers will be created automatically in these controllers
   # *** keep it empty if you would allow all controlers
-  # example: [ApplicationController]
-  # config.whitelist = []
+  # example: [PostsController]
+  # config.only = []
 
   # Options:
   # :pluralize => I18n pluralized helper names
