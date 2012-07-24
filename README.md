@@ -4,7 +4,7 @@
 
 Easily create helper methods with I18n and interpolation support to your controllers and views.
 
-You can configure it to automaticly create some methods (like page_title, page_subtitle) or call the method **simple_helper** manually according to your needs.
+You can configure it to automaticly create some methods (like page_title) or call the method **simple_helper** manually according to your needs.
 
 To display page title in your view:
 
@@ -30,14 +30,19 @@ And/or call the method **simple_helper** manually according to your needs:
 
 ```ruby
 # some examples
-simple_helper :page_subtitle, :sponsor, :title => @post.title
+simple_helper :page_subtitle, :title => @post.title
+
+# declare multiple helpers in one statement
+simple_helper :sponsor, :page_footer, :title => @post.title
+
+# An instance variable **@<helper-method-name>_options** is created for customizations
 @sponsor_options.merge!({:company => "Github"})
 
-page_subtitle "Keep Calm and %{text}", :text => "Call Batman"
-page_subtitle "Keep Calm"
+page_footer "Post %{title} by %{author}"
+@page_footer_options = { :author => @post.author }
 
 simple_helper :user_alert
-@user_alert_options = {:username => @post.author}
+@user_alert_options = {:username => current_user.username }
 ```
 
 If you didn't set the value manually, the gem will get it from your I18n backend.
