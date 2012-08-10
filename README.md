@@ -2,14 +2,17 @@
 [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/vitormil/simple_helpers)
 [![Build Status](https://secure.travis-ci.org/vitormil/simple_helpers.png)](http://travis-ci.org/vitormil/simple_helpers)
 
-Easily create helper methods with I18n and interpolation support to your controllers and views.
+Allow you to easily create helper methods with I18n and interpolation support to be used in your controllers and views.
 
 You can configure it to automaticly create some methods (like page_title) or call the method **simple_helper** manually according to your needs.
 
 To display page title in your view:
 
 ```ruby
-<%= page_title %>
+<head>
+  <title><%= page_title %></title>
+  ...
+</head>
 ```
 
 ### Usage
@@ -29,7 +32,7 @@ end
 And/or call the method **simple_helper** manually according to your needs:
 
 ```ruby
-# some examples
+# declaring one method
 simple_helper :page_subtitle, :title => @post.title
 
 # declare multiple helpers in one statement
@@ -43,6 +46,9 @@ page_footer "Post %{title} by %{author}"
 
 simple_helper :user_alert
 @user_alert_options = {:username => current_user.username }
+
+# filling in the value manually
+page_title @post.title
 ```
 
 If you didn't set the value manually, the gem will get it from your I18n backend.
@@ -71,7 +77,7 @@ en:
 In many cases you want to abstract your translations so that variables can be interpolated into the translation, just like Rails does.
 
 ```ruby
-page_title :name => @user.name
+page_title :name => "John Doe"
 or
 @page_title_options.merge!({:name => "John Doe"})
 or
