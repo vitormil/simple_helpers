@@ -1,8 +1,8 @@
 module SimpleHelpers
   module Version
-    MAJOR = 1
+    MAJOR = 2
     MINOR = 0
     PATCH = 0
-    STRING = "#{MAJOR}.#{MINOR}.#{PATCH}"
+    STRING = "#{MAJOR}.#{MINOR}.#{PATCH}.beta"
   end
 end

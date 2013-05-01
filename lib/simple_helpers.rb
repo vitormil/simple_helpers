@@ -11,8 +11,6 @@ module SimpleHelpers
 end
 
 SimpleHelpers.configure do |config|
-  config.helpers = []
-  config.except  = []
-  config.only    = []
-  config.options = [:log]
+  config.helpers = {}
+  config.options = []
 end

@@ -1,19 +1,11 @@
 module SimpleHelpers
   class Support
-
-    def self.log(message)
-      Rails.logger.debug "SimpleHelpers => #{message}" if SimpleHelpers::Config.has_option? :log
-    end
-
     def self.certified_array!(splat_arg)
       array = splat_arg.first.is_a?(Array) ? splat_arg.first : Array(splat_arg)
       array.collect{|item| item.to_s}
     end
 
     def self.scopes(controller, method_name)
-      options = controller.send "#{method_name}_options"
-      return {:first => options[:scope]} if options.has_key? :scope
-
       controller_name = controller.class.name.underscore
       controller_name.gsub!(/\//, "_")
       controller_name.gsub!(/_controller$/, "")
@@ -25,12 +17,56 @@ module SimpleHelpers
         action_name = simple_helper_aliases.fetch(action_name, action_name) if simple_helper_aliases.is_a? Hash
       end
       group = method_name
-      group = group.pluralize if options.has_key? :pluralize
 
       {
         :first => "#{group}.#{controller_name}.#{action_name.to_s}",
         :second => "#{group}.simple_helper_default"
       }
+    end
+
+    def self.template(controller, context)
+      context.scan(/{{.*?}}/i).each do |key|
+        parts  = key.delete("{}").split(".")
+
+        begin
+          first_argument = parts.shift
+          if first_argument.start_with? "@"
+            instance_variable = controller.instance_variable_get(first_argument)
+
+            value = if parts.empty?
+                      instance_variable
+                    else
+                      thing = parts.shift.to_sym
+                      instance_variable[thing] if instance_variable.respond_to?(thing)
+                    end
+          else
+            value = controller.send first_argument
+          end
+          value = "" unless value
+        rescue
+          value = ""
+        ensure
+          context.sub!(key, value)
+        end
+      end
+      context
+    end
+
+    def self.translate(scope, options)
+      begin
+        _options = options || {}
+        I18n.translate!(scope, _options.merge({raise: true}))
+      rescue I18n::MissingTranslationData
+        ""
+      end
+    end
+
+    def self.get_content(scopes, options)
+      result = SimpleHelpers::Support.translate(scopes[:first], options)
+      if result.empty?
+        result = SimpleHelpers::Support.translate(scopes[:second], options)
+      end
+      result
     end
 
     def self.create_method(controller, name)
@@ -39,41 +75,32 @@ module SimpleHelpers
           if args.empty?
             send "#{name}_get"
           else
-            options = args.extract_options!
-            send "#{name}_set", args.first, options
+            send "#{name}_set", args.first
           end
-        end
-
-        define_method("#{name}_options") do
-          instance_variable_set("@#{name}_options", {}) unless instance_variable_get("@#{name}_options")
-          instance_variable_get("@#{name}_options")
         end
 
         define_method("#{name}_set") do |*args|
           instance_variable_set "@#{name}", args.first
-          instance_variable_set "@#{name}_options", args.last
         end
 
         define_method("#{name}_get") do |*args|
-          scopes      = SimpleHelpers::Support.scopes(controller, name)
+          scopes         = SimpleHelpers::Support.scopes(controller, name)
+          options_hash   = instance_variable_get("@#{name}_options")
+          result         = SimpleHelpers::Support.get_content(scopes, options_hash)
+          helper_options = SimpleHelpers::Config.helpers[name.to_sym]
 
-          value       = instance_variable_get("@#{name}")
-          options     = send("#{name}_options")
+          prefix    = helper_options.fetch(:prefix, "")
+          content   = SimpleHelpers::Support.template(controller, result)
+          separator = if prefix.empty? || content.empty?
+                        ""
+                      else
+                        helper_options.fetch(:separator, " - ")
+                      end
 
-          result      = value % options unless value.nil?
-
-          # removing rails reserved word
-          helper_options = options.delete_if{|k,v| k.to_sym == :scope}
-
-          result ||= t(scopes[:first], helper_options)
-          if result.include? "translation missing" and scopes.has_key? :second
-            helper_options.merge! :default => result
-            result = t(scopes[:second], helper_options)
-          end
-
-          result
+          "#{prefix}#{separator}#{content}"
         end
       end
     end
+
   end
 end

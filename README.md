@@ -2,9 +2,9 @@
 [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/vitormil/simple_helpers)
 [![Build Status](https://secure.travis-ci.org/vitormil/simple_helpers.png)](http://travis-ci.org/vitormil/simple_helpers)
 
-Allow you to easily create helper methods with I18n and interpolation support to be used in your controllers and views.
+Allow you to easily create helper methods with I18n support and **easy interpolation** with instance variables and methods.
 
-You can configure it to automaticly create some methods (like page_title) or call the method **simple_helper** manually according to your needs.
+## Example
 
 To display page title in your view:
 
@@ -15,73 +15,39 @@ To display page title in your view:
 </head>
 ```
 
-### Usage
+Create a file `./config/locale/simple_helpers.yml` (could be another name) to store the values, following the convention: `<helper>.<controller>.<action>`
 
-You can configure an automatic behavior to your controllers setting an initializer:
+```ruby
+en:
+  page_title:
+    posts:
+      new: "New Post"
+      show: "{{@post.title}}"
+      edit: "Editing {{@post.title}}"
+      search: "Search results for {{@query}}..."
+    users:
+      show: "{{@user.name}}'s profile"
+      new: "{{get_title}}"
+      edit: "Edit user"
+      destroy: "Delete user"
+```
+
+### Easy Interpolation
+
+Simple helpers will look for instance variables and methods in the controller, and get the value to interpolate with the i18n values. Awesome!!! :)
+
+### Configuration
+
+Initializer `./config/initializers/simple_helpers.rb`
 
 ```ruby
 require "simple_helpers"
 
 SimpleHelpers.configure do |config|
-  config.helpers = [:page_title]
-  config.except  = [SessionsController]
-  # config.only    = []
+  config.helpers = {
+    page_title: { prefix: "MyBlog", separator: " - " }
+  }
 end
-```
-
-And/or call the method **simple_helper** manually according to your needs:
-
-```ruby
-# declaring one method
-simple_helper :page_subtitle, :title => @post.title
-
-# declare multiple helpers in one statement
-simple_helper :sponsor, :page_footer, :title => @post.title
-
-# An instance variable **@<helper-method-name>_options** is created for customizations
-@sponsor_options.merge!({:company => "Github"})
-
-page_footer "Post %{title} by %{author}"
-@page_footer_options = { :author => @post.author }
-
-simple_helper :user_alert
-@user_alert_options = {:username => current_user.username }
-
-# filling in the value manually
-page_title @post.title
-```
-
-If you didn't set the value manually, the gem will get it from your I18n backend.
-
-```ruby
-en:
-  page_title:
-    simple_helper_default:
-      "Default page title"
-    users:
-      new: "Sign up"
-      show: "%{name}'s Page"
-  page_subtitle:
-    simple_helper_default:
-      "Default page subtitle"
-  user_alert:
-    users:
-      index: "This alert goes to %{username}"
-  sponsor:
-    simple_helper_default:
-      "This article %{title} is sponsored by %{company}."
-```
-
-### Interpolation
-
-In many cases you want to abstract your translations so that variables can be interpolated into the translation, just like Rails does.
-
-```ruby
-page_title :name => "John Doe"
-or
-@page_title_options.merge!({:name => "John Doe"})
-or
-simple_helper :page_title, :name => "John Doe"
 ```
 
 ### Aliases
@@ -92,57 +58,6 @@ There are some action aliases:
 "create" => "new"
 "update" => "edit"
 "remove" => "destroy"
-```
-
-I18n backend chain:
-
-```ruby
-en:
-  <helper method name>:
-    simple_helper_default:
-      "My default data"
-    <controller>:
-      <action>: "My custom data for this action"
-```
-
-Adding custom aliases:
-
-```ruby
-class PostsController < ApplicationController
-
-  SIMPLE_HELPER_ALIASES = {
-    "the_custom_action" => "index"
-  }
-
-  def index
-    ...
-  end
-
-  def the_custom_action
-    ...
-  end
-
-end
-```
-
-This means that the I18n scope for the action "the_custom_action" will be the same as "index".
-
-You can also specify a custom location at the "scope" key at the options hash, exactly like Rails does.
-
-```ruby
-simple_helper :page_title, :scope => "my.awesome.chain", :name => "John"
-or
-simple_helper :page_title
-@page_title_options = {:scope => "my.awesome.chain", :name => "John"}
-```
-
-Make sure you have this scope defined in a locale file:
-
-```ruby
-en:
-  my:
-    awesome:
-      chain: "What's up %{name}?"
 ```
 
 ## Getting started
@@ -169,19 +84,9 @@ After you install and add it to your Gemfile, you need to run the generator to c
 rails generate simple_helpers
 ```
 
-Take a look at the generated file:
-
-https://github.com/vitormil/simple_helpers/blob/master/templates/initializer.rb
-
 ## Maintainer
 
 * Vitor Oliveira (<http://github.com/vitormil>)
-
-## Special thanks
-
-I have been learning a lot with Nando Vieira and this gem was inspired by the "page_title" feature from his gem @swiss_knife.
-
-Thanks @fnando! (<http://github.com/fnando>)
 
 ## Contributing
 

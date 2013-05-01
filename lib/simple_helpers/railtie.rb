@@ -14,11 +14,7 @@ module SimpleHelpers
         initialize_method = instance_method(:initialize)
 
         define_method :initialize do |*args|
-          if SimpleHelpers::Config.allowed_controller?(self.class.name)
-            simple_helper(SimpleHelpers::Config.helpers)
-          else
-            SimpleHelpers::Support.log "Controller #{self.class.inspect} not allowed."
-          end
+          simple_helper(SimpleHelpers::Config.helpers.keys)
 
           initialize_method.bind(self).call(*args)
         end
