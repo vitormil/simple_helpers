@@ -45,7 +45,7 @@ require "simple_helpers"
 
 SimpleHelpers.configure do |config|
   config.helpers = {
-    page_title: { prefix: "MyBlog" }  # other options: suffix, separator
+    page_title: { suffix: "MyBlog", separator: " · " }  # other option: prefix
   }
 end
 ```

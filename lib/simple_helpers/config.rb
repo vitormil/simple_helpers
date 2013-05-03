@@ -1,6 +1,6 @@
 module SimpleHelpers
   class Config
-    DEFAULT_SEPARATOR = " · "
+    DEFAULT_SEPARATOR = " - "
 
     def self.helpers
       @helpers ||= {}
