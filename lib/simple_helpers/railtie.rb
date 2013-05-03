@@ -19,7 +19,6 @@ module SimpleHelpers
           initialize_method.bind(self).call(*args)
         end
       end
-      ::I18n.load_path += Dir[File.dirname(__FILE__) + "/../../locales/*.yml"]
     end
   end
 end

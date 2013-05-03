@@ -25,24 +25,9 @@ module SimpleHelpers
     end
 
     def self.template(controller, context)
-      context.scan(/{{.*?}}/i).each do |key|
-        parts  = key.delete("{}").split(".")
-
+      entries(context).each do |key|
         begin
-          first_argument = parts.shift
-          if first_argument.start_with? "@"
-            instance_variable = controller.instance_variable_get(first_argument)
-
-            value = if parts.empty?
-                      instance_variable
-                    else
-                      thing = parts.shift.to_sym
-                      instance_variable[thing] if instance_variable.respond_to?(thing)
-                    end
-          else
-            value = controller.send first_argument
-          end
-          value = "" unless value
+          value = simple_helper_value(controller, key)
         rescue
           value = ""
         ensure
@@ -61,7 +46,10 @@ module SimpleHelpers
       end
     end
 
-    def self.get_content(scopes, options)
+    def self.get_content(controller, key)
+      scopes  = SimpleHelpers::Support.scopes(controller, key)
+      options = controller.instance_variable_get("@#{key}_options")
+
       result = SimpleHelpers::Support.translate(scopes[:first], options)
       if result.empty?
         result = SimpleHelpers::Support.translate(scopes[:second], options)
@@ -84,23 +72,54 @@ module SimpleHelpers
         end
 
         define_method("#{name}_get") do |*args|
-          scopes         = SimpleHelpers::Support.scopes(controller, name)
-          options_hash   = instance_variable_get("@#{name}_options")
-          result         = SimpleHelpers::Support.get_content(scopes, options_hash)
+          result         = SimpleHelpers::Support.get_content(controller, name)
           helper_options = SimpleHelpers::Config.helpers[name.to_sym]
 
           prefix    = helper_options.fetch(:prefix, "")
           content   = SimpleHelpers::Support.template(controller, result)
-          separator = if prefix.empty? || content.empty?
-                        ""
-                      else
-                        helper_options.fetch(:separator, " - ")
-                      end
+          sufix     = helper_options.fetch(:sufix, "")
+          separator = helper_options.fetch(:separator, SimpleHelpers::Config::DEFAULT_SEPARATOR)
 
-          "#{prefix}#{separator}#{content}"
+          prefix_separator = prefix.empty? || content.empty? ? "" : separator
+          sufix_separator  = sufix.empty?  || content.empty? ? "" : separator
+
+          "#{prefix}#{prefix_separator}#{content}#{sufix_separator}#{sufix}"
         end
       end
     end
 
+  private
+
+    def self.entries(context)
+      context.scan(/{{.*?}}/i)
+    end
+
+    def self.simple_helper_value(controller, key)
+      tag = key.delete("{}")
+      if tag.start_with? "@"
+        get_instance_variable(controller, tag)
+      else
+        get_from_controller(controller, tag)
+      end || ""
+    end
+
+    def self.get_instance_variable(controller, key)
+      parts             = key.split(".")
+      first_argument    = parts.shift
+      instance_variable = controller.instance_variable_get(first_argument)
+
+      if parts.empty?
+        instance_variable
+      else
+        thing = parts.shift.to_sym
+        instance_variable[thing] if instance_variable.respond_to?(thing)
+      end
+    end
+
+    def self.get_from_controller(controller, key)
+      controller.send key
+    end
+
   end
+
 end
