@@ -3,6 +3,6 @@ module SimpleHelpers
     MAJOR = 2
     MINOR = 0
     PATCH = 0
-    STRING = "#{MAJOR}.#{MINOR}.#{PATCH}.beta"
+    STRING = "#{MAJOR}.#{MINOR}.#{PATCH}"
   end
 end
