@@ -24,12 +24,10 @@ module SimpleHelpers
       }
     end
 
-    def self.template(controller, context)
+    def self.parser(controller, context)
       entries(context).each do |key|
         begin
           value = simple_helper_value(controller, key)
-        rescue
-          value = ""
         ensure
           context.sub!(key, value)
         end
@@ -46,9 +44,8 @@ module SimpleHelpers
       end
     end
 
-    def self.get_content(controller, key)
+    def self.get_i18n_content(controller, key, options)
       scopes  = SimpleHelpers::Support.scopes(controller, key)
-      options = controller.instance_variable_get("@#{key}_options")
 
       result = SimpleHelpers::Support.translate(scopes[:first], options)
       if result.empty?
@@ -72,18 +69,8 @@ module SimpleHelpers
         end
 
         define_method("#{name}_get") do |*args|
-          result         = SimpleHelpers::Support.get_content(controller, name)
-          helper_options = SimpleHelpers::Config.helpers[name.to_sym]
-
-          prefix    = helper_options.fetch(:prefix, "")
-          content   = SimpleHelpers::Support.template(controller, result)
-          sufix     = helper_options.fetch(:sufix, "")
-          separator = helper_options.fetch(:separator, SimpleHelpers::Config::DEFAULT_SEPARATOR)
-
-          prefix_separator = prefix.empty? || content.empty? ? "" : separator
-          sufix_separator  = sufix.empty?  || content.empty? ? "" : separator
-
-          "#{prefix}#{prefix_separator}#{content}#{sufix_separator}#{sufix}"
+          "%{prefix}%{prefix_separator}%{content}%{suffix_separator}%{suffix}" %
+            SimpleHelpers::Support.simple_helper_parts(controller, name)
         end
       end
     end
@@ -118,6 +105,26 @@ module SimpleHelpers
 
     def self.get_from_controller(controller, key)
       controller.send key
+    end
+
+    def self.simple_helper_parts(controller, name)
+      name_options   = controller.instance_variable_get("@#{name}_options") || {}
+      text_raw       = SimpleHelpers::Support.get_i18n_content(controller, name, name_options)
+      content        = SimpleHelpers::Support.parser(controller, text_raw)
+
+      helper_options = SimpleHelpers::Config.helpers[name.to_sym].merge(name_options)
+      prefix         = helper_options.fetch(:prefix, "")
+      suffix         = helper_options.fetch(:suffix, "")
+      separator      = helper_options.fetch(:separator, SimpleHelpers::Config::DEFAULT_SEPARATOR)
+
+      {
+        prefix: prefix,
+        suffix: suffix,
+        separator: separator,
+        content: content,
+        prefix_separator: prefix.empty? || content.empty? ? "" : separator,
+        suffix_separator: suffix.empty? || content.empty? ? "" : separator
+      }
     end
 
   end
